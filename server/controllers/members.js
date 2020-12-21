@@ -5,22 +5,17 @@ module.exports = {
 
     findMembers: async (req, res, next) => {
         console.log('MembersController.findMembers() called!');
-        
+        console.log('req query', req.query)
         let Member = mongoose.model('members', membersSchema)
 
         let crewIds = []
-        for(key in req.body.crewIds) { 
-            storeTypes.push(String(req.body.crewIds[key]))
+        for(crewId in req.query.crewIds) { 
+            crewIds.push(Number(req.query.crewIds[crewId]))
         }
 
         let userIds = []
-        for(key in req.body.userIds) { 
-            storeTypes.push(String(req.body.userIds[key]))
-        }
-
-        let names = []
-        for(key in req.body.names) { 
-            storeTypes.push(String(req.body.names[key]))
+        for(userId in req.query.userIds) { 
+            userIds.push(Number(req.query.userIds[userId]))
         }
 
         Member.aggregate([
@@ -28,7 +23,6 @@ module.exports = {
                 {
                     'crewId': {  $in: crewIds },
                     'userId': {  $in: userIds },
-                    'name': {  $in: names },
                 }
             },
             {
@@ -50,7 +44,7 @@ module.exports = {
     createMembers: async (req, res, next) => {
         console.log('MembersController.createMembers() called!');
 
-        const { crewId, id, image, name, userId } = req.body;
+        const { crewId, id, image, name, userId } = req.query;
         
         let Member = mongoose.model('members', membersSchema)
 

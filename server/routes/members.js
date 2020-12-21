@@ -9,13 +9,13 @@ const MembersController = require('../controllers/members');
  * @access
  */
 
-router.route('/members')
+router.route('/')
     .get(MembersController.findMembers);
 
-router.route('/members')
+router.route('/')
     .post(MembersController.createMembers);
 
-router.route('/members')
+router.route('/')
     .delete(MembersController.deleteMembers);
 
 module.exports = router;

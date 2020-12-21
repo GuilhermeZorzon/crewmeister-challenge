@@ -9,10 +9,10 @@ const AbsencesController = require('../controllers/absences');
  * @access
  */
 
-router.route('/absences')
+router.route('/')
     .get(AbsencesController.findAbsences);
 
-// router.route('/absences')
+// router.route('/')
 //     .post(AbsencesController.createAbsences)
 
 module.exports = router;

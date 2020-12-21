@@ -8,59 +8,67 @@ module.exports = {
         
         let Absence = mongoose.model('absences', absencesSchema)
 
+        // Getting data from absences and merging with members data
         Absence.aggregate([
-            {$match: 
-                {
+            {
+                $match: {
                     '$or': [
                         {
                             'startDate': {
-                                '$gte': req.query.minDate,
-                                '$lte': req.query.maxDate
+                                '$gte': req.query.startDate,
+                                '$lte': req.query.endDate
                             }
                         },
                         {
                             'endDate': {
-                                '$gte': req.query.minDate,
-                                '$lte': req.query.maxDate
+                                '$gte': req.query.startDate,
+                                '$lte': req.query.endDate
                             }
                         },
                     ]
                 }
-            }
+            },
+            {
+                $lookup: {
+                    from: "members",
+                    let: {
+                        userId: "$userId",
+                        crewId: "$crewId"
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {$and: [
+                                    {
+                                        $eq: [ "$userId", "$$userId" ]
+                                    },
+                                    {
+                                        $eq: [ "$crewId", "$$crewId" ]
+                                    }
+                                ]}
+                            }
+                        }
+                    ],
+                    as: "member"
+                }
+            },
+            {
+                $replaceRoot: {
+                   newRoot: {
+                      $mergeObjects: [
+                        {
+                            $arrayElemAt: [ "$member", 0 ]
+                        },
+                        "$$ROOT"
+                      ]
+                   }
+                }
+            },
+            { $project: { member: 0 } }
         ], function(err, result) {
             console.log(result[0])
             res.json({result}); 
         });
-	},
-		
-	
-    // createAbsences: async (req, res, next) => {
-    //     console.log('AbsencesController.createAbsences() called!');
-
-    //     const { crewId, id, image, name, userId } = req.body;
-        
-    //     let Absence = mongoose.model('members', absencesSchema)
-
-    //     const member = new Absence(
-    //         { 
-    //             absence_days: {type: Array, },
-    //             admitterId: {type: Number, },
-    //             admitterNote: {type: String, },
-    //             confirmedAt: {type: String, },
-    //             crewId: {type: Number,},
-    //             endDate: {type: String,},
-    //             id: {type: Number,},
-    //             memberNote: {type: String,},
-    //             rejectedAt: {type: String,},
-    //             startDate: {type: String,},
-    //             type: {type: String,},
-    //             userId: {type: Number,},
-    //         }
-    //     )
-
-    //     member.save(function(err, doc) {
-    //         res.json({doc}); 
-    //     });
-    // },
+    }
     
 }
