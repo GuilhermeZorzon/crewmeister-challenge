@@ -14,14 +14,14 @@ module.exports = {
                     '$or': [
                         {
                             'startDate': {
-                                '$gte': req.query.minDate,
-                                '$lte': req.query.maxDate
+                                '$gte': req.query.startDate,
+                                '$lte': req.query.endDate
                             }
                         },
                         {
                             'endDate': {
-                                '$gte': req.query.minDate,
-                                '$lte': req.query.maxDate
+                                '$gte': req.query.startDate,
+                                '$lte': req.query.endDate
                             }
                         },
                     ]
