@@ -43,8 +43,10 @@ class AbsencesManager extends Component {
         loadingData: true,
         crewIds: new DataFrame([]),
         members: new DataFrame([]),
-        selectedCrewIds: new DataFrame([]),
-        selectedMembers: new DataFrame([])
+        selectedCrewIds: [],
+        selectedMembers: [],
+        crewIdsOptions: [],
+        membersOptions: []
     };
 	} 
 	
@@ -57,24 +59,21 @@ class AbsencesManager extends Component {
     // }
     
     async componentDidMount() {
-        console.log(backendRoutes.localHost + backendRoutes.allMembers);
         let members = await axios.get(backendRoutes.localHost + backendRoutes.allMembers)
+  
         let membersDataFrame = new DataFrame(members.data.result);
         let crewIds = membersDataFrame.distinct('crewId');
-        // console.log('ids', membersDataFrame.distinct('crewId'))
-        // console.log('list', membersDataFrame.distinct('crewId'))
-        // let values = crewIds.toArray().map(option => {
-        //     console.log('option', option[0])
-        //     return option[0]
-        // })
-        // console.log('val', values)
+
+        let crewIdsOptions = getValues(crewIds, true)
+        let membersOptions = getValues(membersDataFrame, true)
+
         this.setState({
             crewIds: crewIds,
             members: membersDataFrame,
+            crewIdsOptions: crewIdsOptions,
+            membersOptions: membersOptions,
             loadingData: false
         })
-
-        console.log('state', this.state)
     }
 
   render() {
@@ -204,22 +203,13 @@ class AbsencesManager extends Component {
       overflowY: 'scroll', 
       // overflowX: 'scroll'
     }
-    console.log('state outside', this.state)
-    let usedCrewIds = this.state.selectedCrewIds.count() === 0 ? this.state.crewIds : this.state.selectedCrewIds;
-    // let usedCrewIdsValues = getValues(usedCrewIds)
-    console.log('used cre', usedCrewIds)
-    console.log('used cre count', usedCrewIds.count())
-    let usedCrewIdsValues = usedCrewIds.toArray().map(option => {
-        console.log('option', option[0])
-        return option[0]
-    })
-    console.log('used', usedCrewIdsValues.includes(352))
+
+    let usedCrewIds = this.state.selectedCrewIds.length === 0 ? this.state.crewIdsOptions : this.state.selectedCrewIds;
 
     let membersOptions = [];
-    this.state.members.where(row => usedCrewIdsValues.includes(row.get('crewId'))).map(row => {
+    this.state.members.where(row => usedCrewIds.includes(row.get('crewId'))).map(row => {
         membersOptions.push({label: (row.get('userId') + ' - ' + row.get('name')), value: row.get('userId')});
     });
-    console.log('members optons', membersOptions)
 
     if(this.state.loadingData === false) {
         return (
@@ -227,25 +217,6 @@ class AbsencesManager extends Component {
             <div>
                 <div style={selectsContainer}>
                     {/* <div style={{display: 'flex', flexBasis: '35%', alignContent: 'flex-end'}}> */}
-                        <div style={membersSelect}>
-                            <MultiSelect 
-                                value={this.state.selectedMembers.count === 0 ? [] : this.state.selectedMembers.count} 
-                                options={membersOptions}
-                                placeholder={'Select members'}
-                                onChange={(e) => {
-                                    this.setState({
-                                        selectedMembers: e
-                                    })
-                                }}
-                            />
-                        </div> 
-                        {/* <div style={yearSelect}>
-                                <MultiSelect 
-                                        value={'Jun'}
-                                        options={['Jun', 'Jul']}
-                                />
-                            </div>  */}
-                    {/* </div> */}
                     <div style={dateSelect}>
                         <ConfigProvider>
                             <RangePicker 
@@ -262,6 +233,25 @@ class AbsencesManager extends Component {
                             />
                         </ConfigProvider>
                     </div>
+                    <div style={membersSelect}>
+                        <MultiSelect 
+                            value={this.state.selectedMembers} 
+                            options={membersOptions}
+                            placeholder={'Select members'}
+                            onChange={(e) => {
+                                this.setState({
+                                    selectedMembers: e
+                                })
+                            }}
+                        />
+                    </div> 
+                        {/* <div style={yearSelect}>
+                                <MultiSelect 
+                                        value={'Jun'}
+                                        options={['Jun', 'Jul']}
+                                />
+                            </div>  */}
+                    {/* </div> */}
                     {/* <div style={buttonContainer}>
                         <IconButton style={buttonStyle} onClick={e => {this.handleClickOpen()}}>
                             <AddCircleOutlineIcon/>
