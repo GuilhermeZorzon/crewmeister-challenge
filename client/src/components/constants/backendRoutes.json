@@ -1,0 +1,5 @@
+{
+    "localHost": "http://localhost:5000/api/",
+    "members": "members/",
+    "allMembers": "members/all"
+}

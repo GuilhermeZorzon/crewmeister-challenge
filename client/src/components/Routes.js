@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import AbsencesManager from './pages/AbsensesManager';
+import AbsencesManager from './pages/AbsencesManager';
 
 const Main = () => (
     <BrowserRouter>

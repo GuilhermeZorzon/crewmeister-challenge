@@ -18,4 +18,7 @@ router.route('/')
 router.route('/')
     .delete(MembersController.deleteMembers);
 
+router.route('/all')
+    .get(MembersController.findAllMembers);
+
 module.exports = router;

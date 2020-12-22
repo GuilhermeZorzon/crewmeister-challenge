@@ -8,7 +8,7 @@
     "@material-ui/core": "^4.9.9",
     "@material-ui/icons": "^4.9.1",
     "amcharts3": "^3.21.13",
-    "antd": "^3.11.6",
+    "antd": "^3.26.20",
     "antd-theme-webpack-plugin": "^1.1.6",
     "axios": "^0.18.0",
     "draftjs-to-html": "^0.8.4",

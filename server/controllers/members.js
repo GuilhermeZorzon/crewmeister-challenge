@@ -78,5 +78,16 @@ module.exports = {
             res.send({ msg: "successfully deleted" }); 
         }));
     },
+
+    findAllMembers: async (req, res, next) => {
+        console.log('MembersController.findAllMembers() called!');
+        
+        let Member = mongoose.model('members', membersSchema)
+
+        Member.find({}, function(err, result) {
+            console.log(result[0])
+            res.json({result}); 
+        });
+    },
     
 }
