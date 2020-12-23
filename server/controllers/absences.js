@@ -1,6 +1,37 @@
 const mongoose = require('mongoose');
 const absencesSchema = require('../models/Absences');
 
+function defineMatchClause(query) {
+    let matchClause = {}
+    if((query.startDate !== undefined && query.startDate !== null) && (query.endDate !== undefined && query.endDate !== null)) {
+        matchClause['$or'] = [
+            {
+                'startDate': {
+                    '$gte': query.startDate,
+                    '$lte': query.endDate
+                }
+            },
+            {
+                'endDate': {
+                    '$gte': query.startDate,
+                    '$lte': query.endDate
+                }
+            },
+        ]
+    }
+    if(query.userIds !== undefined && query.userIds !== null) {
+        // Transforming queried user ids into numbers
+        let userIds = []
+        for(userId in query.userIds) { 
+            userIds.push(Number(query.userIds[userId]))
+        }
+
+        matchClause['userId'] = {  $in: userIds }
+    }
+
+    return matchClause
+}
+
 module.exports = {
 
     findAbsences: async (req, res, next) => {
@@ -8,26 +39,10 @@ module.exports = {
         
         let Absence = mongoose.model('absences', absencesSchema)
 
+        let matchClause = defineMatchClause(req.query);
+        
         // Getting data from absences and merging with members data
         Absence.aggregate([
-            {
-                $match: {
-                    '$or': [
-                        {
-                            'startDate': {
-                                '$gte': req.query.startDate,
-                                '$lte': req.query.endDate
-                            }
-                        },
-                        {
-                            'endDate': {
-                                '$gte': req.query.startDate,
-                                '$lte': req.query.endDate
-                            }
-                        },
-                    ]
-                }
-            },
             {
                 $lookup: {
                     from: "members",
@@ -45,7 +60,7 @@ module.exports = {
                                     {
                                         $eq: [ "$crewId", "$$crewId" ]
                                     }
-                                ]}
+                                ]},
                             }
                         }
                     ],
@@ -64,7 +79,10 @@ module.exports = {
                    }
                 }
             },
-            { $project: { member: 0 } }
+            { $project: { member: 0 } },
+            {
+                $match: matchClause
+            }
         ], function(err, result) {
             console.log(result[0])
             res.json({result}); 
