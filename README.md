@@ -24,7 +24,7 @@ There are 3 backend routes on this app
 You can have up to 2 filters in the backend query - both presented as a date range picker and a multi selector in the front-end.
  - The first filter is date, which goes as startDate and endDate on the query. Retrieves all absences with db.startDate or db.endDate between the specified dates
 e.g: http://localhost5000/api/absences?startDate=2017-01-01&endDate=2017-02-02
- - The other filter is userId, which is treated as an array. It retriever all absences for a specific user.
+ - The other filter is userId, which is treated as an array. It retrieves all absences for a specific user.
 e.g: http://localhost5000/api/absences?userIds[0]=644&userIds[1]=5293
 
 Both filters can be used alone or together, and if no filter is sent by the url query, the api call retrieves all of the absences data. 
