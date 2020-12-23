@@ -6,7 +6,7 @@ const cors = require('cors');
 
 require('dotenv').config();
 
-const uri = process.env.crewmeister_connection_uri;
+const uri = process.env.crewmeister_mongo_connection_uri;
 mongoose.connect(uri, { 
         useNewUrlParser: true, 
         useUnifiedTopology: true, 
