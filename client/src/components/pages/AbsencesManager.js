@@ -123,7 +123,7 @@ class AbsencesManager extends Component {
   render() {
     const selectsContainer = {
         margin: '0.3vw auto 0 auto', 
-        maxWidth: '70%', 
+        maxWidth: '80%', 
         display: 'flex', 
         justifyContent: 'space-between'
     }
@@ -134,7 +134,7 @@ class AbsencesManager extends Component {
     }
     const membersSelect = {
         padding: '0.5vw', 
-        flexBasis: '20%',
+        flexBasis: '30%',
         zIndex: 4
     }
     const crewsSelect = {
@@ -143,11 +143,25 @@ class AbsencesManager extends Component {
         zIndex: 4
     }
     const buttonStyle = {
-        padding: '0.5vw 0vw 0.5vw 0.5vw', 
+        padding: '0.5vw 0.5vw 0.5vw 0.5vw',
+        marging: '0.5vw 0vw 0.5vw 0.5vw',
         flexBasis: '15%',
         backgroundColor: 'orange',
         color: 'white',
         maxHeight: '4vw',
+    }
+    const loaderContainer = {
+        height: '100vh', 
+        alignItems: 'center', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        margin: 'auto'
+    }
+    const loaderDiv = {
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'row', 
+        alignItems: 'center'
     }
 
     let usedCrewIds = this.state.selectedCrewIds.length === 0 ? this.state.crewIdsOptions : this.state.selectedCrewIds;
@@ -225,9 +239,11 @@ class AbsencesManager extends Component {
     } else {
         return(
             <Auxiliary>
-            <div className="gx-loader-view">
-                <Loader />
-            </div>
+                <div style={loaderContainer}>
+                    <div style={loaderDiv}>
+                        <Loader />
+                    </div>
+                </div>
             </Auxiliary>
         );
     }
