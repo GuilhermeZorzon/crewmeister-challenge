@@ -48,11 +48,13 @@ class AbsencesManager extends Component {
         let crewIdsOptions = [];
         crewIds.map(row => {
             crewIdsOptions.push({label: (row.get('crewId')), value: row.get('crewId')});
+            return 0
         });
 
         let membersOptions = [];
         membersDataFrame.map(row => {
             membersOptions.push({label: (row.get('userId') + ' - ' + row.get('name')), value: row.get('userId')});
+            return 0
         });
 
         this.setState({
@@ -103,6 +105,7 @@ class AbsencesManager extends Component {
             // uid, dtStart, dtEnd, userName, absenceType, memberNote, admitterNote
             calendar += addEvent(uid, row.get('startDate'), row.get('endDate'), row.get('name'), row.get('type'), row.get('memberNote'), row.get('admitterNote'));
             uid += 1;
+            return 0
         })
         calendar += endCalendar();
 
@@ -153,11 +156,13 @@ class AbsencesManager extends Component {
     let crewsOptions = [];
     this.state.members.distinct('crewId').map(row => {
         crewsOptions.push({label: (row.get('crewId')), value: row.get('crewId')});
+        return 0
     });
 
     let membersOptions = [];
     this.state.members.where(row => usedCrewIdsValues.includes(row.get('crewId'))).map(row => {
         membersOptions.push({label: (row.get('userId') + ' - ' + row.get('name')), value: row.get('userId')});
+        return 0
     });
 
     if(this.state.loadingData === false) {
