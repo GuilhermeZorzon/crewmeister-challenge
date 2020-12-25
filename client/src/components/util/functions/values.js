@@ -3,15 +3,11 @@ function getValues(options, isDataFrame=false) {
         return options
     }
     let values = []
-    if(isDataFrame === false) {
-        values = options.map(option => {
-            return option.value
-        })
-    } else {
-        values = options.toArray().map(option => {
-            return option[0]
-        })
-    }
+    
+    values = options.map(option => {
+        return option.value
+    })
+    
     return values
 }
 

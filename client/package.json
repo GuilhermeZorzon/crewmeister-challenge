@@ -65,10 +65,16 @@
     "grunt-contrib-uglify": "~0.2.7",
     "grunt-mocha": "~0.4.6"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/src/__mocks__/fileMock.js"
+    }
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired --env=jsdom"
+    "test": "jest"
   },
   "devDependencies": {
     "add": "^2.0.6",
