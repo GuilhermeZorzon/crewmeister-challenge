@@ -9,8 +9,7 @@
   "scripts": {
     "dev": "concurrently \"npm run start\" \"npm run start --prefix client\"",
     "start-client": "npm run start --prefix client",
-    "start": "nodemon server/server.js",
-    "test": "jests"
+    "start": "nodemon server/server.js"
   },
   "author": "Guilherme Zorzon",
   "license": "ISC",
