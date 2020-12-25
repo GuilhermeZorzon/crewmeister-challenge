@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { ConfigProvider, DatePicker } from 'antd';
-import 'antd/dist/antd.css';
 import axios from 'axios';
 import DataFrame from 'dataframe-js';
 import MultiSelect from '../widgets/MultiSelect.js';
@@ -12,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import { createCalendar, addEvent, endCalendar } from '../util/functions/ics.js';
 import { dateToString } from '../util/functions/dates';
 import { getValues } from '../util/functions/values';
+import 'antd/dist/antd.css';
 
 const { RangePicker } = DatePicker;
 const dateFormat = 'DD/MM/YYYY';
