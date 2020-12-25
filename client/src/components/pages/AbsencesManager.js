@@ -93,7 +93,6 @@ class AbsencesManager extends Component {
         absencesDataFrame = absencesDataFrame.sortBy(['startDate']);
     
         absencesDataFrame = absencesDataFrame.restructure(columnNamesAbsences);
-        console.log('csv absences', absencesDataFrame.restructure(columnNamesAbsences));
     
         this.setState({
           fetchingCSV: false

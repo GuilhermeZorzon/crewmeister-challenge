@@ -85,7 +85,8 @@ module.exports = {
             }
         ], function(err, result) {
             console.log(result[0])
-            res.json({result}); 
+            res.json({result});
+            return result
         });
     }
     
